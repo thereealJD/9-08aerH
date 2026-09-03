@@ -1446,7 +1446,7 @@
   <script>
     (function() {
       // Configuration for Japanese
-      const JAPANESE_WORDS_URL = 'words.txt';
+      const JAPANESE_WORDS_URL = 'C:\Users\jayep\OneDrive\Desktop\jap_words.txt';
       const WIKTIONARY_API_URL = 'https://ja.wiktionary.org/w/api.php?action=query&prop=extracts&explaintext=true&format=json&origin=*&titles=';
       
       let currentTab = 'daily';
@@ -1581,8 +1581,9 @@
 
         // Fetch Reading (Hiragana) via Jisho
         try {
-            const jRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent('https://jisho.org/api/v1/search/words?keyword=' + word)}`);
-            const jData = await jRes.json();
+            const jRes = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://jisho.org/api/v1/search/words?keyword=' + word)}`);
+const proxyData = await jRes.json();
+const jData = JSON.parse(proxyData.contents);
             if (jData.data && jData.data.length > 0) {
                 // Find best match for the specific word
                 const match = jData.data.find(d => d.japanese.some(j => j.word === word || j.reading === word));
@@ -2419,8 +2420,9 @@
 
         // 2. Fetch Jisho API for Hiragana to Kanji suggestions
         try {
-            const jRes = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent('https://jisho.org/api/v1/search/words?keyword=' + val)}`);
-            const jData = await jRes.json();
+            const jRes = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://jisho.org/api/v1/search/words?keyword=' + word)}`);
+const proxyData = await jRes.json();
+const jData = JSON.parse(proxyData.contents);
             if (jData.data) {
                 const jishoWords = jData.data.flatMap(d => d.japanese.map(j => j.word).filter(Boolean));
                 // Intersect with local dictionary to guarantee valid words
